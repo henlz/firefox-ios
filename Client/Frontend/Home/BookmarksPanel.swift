@@ -351,6 +351,12 @@ class BookmarksPanel: SiteTableViewController, HomePanel {
                 return
             }
 
+            // Synchronously force a reload of the data prior to removing to keep our panels model in sync with
+            // whats on disk.
+            if let result = self.source?.reloadData().value {
+                self.onModelFetched(result)
+            }
+
             log.debug("Removing rows \(indexPath).")
 
             // Block to do this -- this is UI code.
@@ -366,6 +372,7 @@ class BookmarksPanel: SiteTableViewController, HomePanel {
                 return
             }
 
+            // Get new source after removing the GUID
             guard let reloaded = source.reloadData().value.successValue else {
                 log.debug("Failed to reload model.")
                 return
