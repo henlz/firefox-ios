@@ -150,6 +150,8 @@ protocol Profile: class {
     var certStore: CertStore { get }
     var recentlyClosedTabs: ClosedTabsStore { get }
 
+    var isShutdown: Bool { get }
+    
     func shutdown()
     func reopen()
 
@@ -186,6 +188,7 @@ protocol Profile: class {
 public class BrowserProfile: Profile {
     private let name: String
     private let keychain: KeychainWrapper
+    var isShutdown = false
 
     internal let files: FileAccessor
 
@@ -268,7 +271,8 @@ public class BrowserProfile: Profile {
 
     func reopen() {
         log.debug("Reopening profile.")
-
+        isShutdown = false
+        
         if dbCreated {
             db.reopenIfClosed()
         }
@@ -280,6 +284,7 @@ public class BrowserProfile: Profile {
 
     func shutdown() {
         log.debug("Shutting down profile.")
+        isShutdown = true
 
         if self.dbCreated {
             db.forceClose()
