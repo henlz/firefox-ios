@@ -717,7 +717,7 @@ class HomePageSetting: Setting {
 
     override var accessoryType: UITableViewCellAccessoryType { return .DisclosureIndicator }
 
-    override var accessibilityIdentifier: String? { return "HomePageSetting" }
+    override var accessibilityIdentifier: String? { return "Homepage" }
 
     init(settings: SettingsTableViewController) {
         self.profile = settings.profile
@@ -732,7 +732,6 @@ class HomePageSetting: Setting {
         viewController.tabManager = tabManager
         navigationController?.pushViewController(viewController, animated: true)
     }
-
 }
 
 class NewTabPageSetting: Setting {
@@ -740,7 +739,7 @@ class NewTabPageSetting: Setting {
 
     override var accessoryType: UITableViewCellAccessoryType { return .DisclosureIndicator }
 
-    override var accessibilityIdentifier: String? { return "NewTabPage.Setting" }
+    override var accessibilityIdentifier: String? { return "NewTab" }
 
     init(settings: SettingsTableViewController) {
         self.profile = settings.profile
@@ -752,5 +751,23 @@ class NewTabPageSetting: Setting {
         let viewController = NewTabChoiceViewController(prefs: profile.prefs)
         navigationController?.pushViewController(viewController, animated: true)
     }
-    
+}
+
+class OpenWithSetting: Setting {
+    let profile: Profile
+
+    override var accessoryType: UITableViewCellAccessoryType { return .DisclosureIndicator }
+
+    override var accessibilityIdentifier: String? { return "OpenWith.Setting" }
+
+    init(settings: SettingsTableViewController) {
+        self.profile = settings.profile
+
+        super.init(title: NSAttributedString(string: Strings.SettingsOpenWithSectionName, attributes: [NSForegroundColorAttributeName: UIConstants.TableViewRowTextColor]))
+    }
+
+    override func onClick(navigationController: UINavigationController?) {
+        let viewController = OpenWithSettingsViewController(prefs: profile.prefs)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 }
